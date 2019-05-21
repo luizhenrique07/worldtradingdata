@@ -1,3 +1,13 @@
-const a = 8
+import * as https from 'https'
 
-console.log(a)
+class App {
+    public options: https.RequestOptions
+
+    public constructor(){
+        this.options
+    }
+
+    private callAPI(){
+        https.
+    }
+}
