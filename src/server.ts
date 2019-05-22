@@ -1,6 +1,5 @@
 import * as https from "https";
 import { IncomingMessage, ClientRequest } from "http";
-import { hostname } from "os";
 
 class App {
   public options: https.RequestOptions;
