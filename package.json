@@ -4,7 +4,7 @@
   "description": "Node.js wrapper for World Trading Data API",
   "main": "./src/server.ts",
   "scripts": {
-    "start": "nodemon src/server.ts",
+    "start": "nodemon --watch src --exec ts-node src/server.ts -e ts",
     "build": "tsc -p tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -23,6 +23,7 @@
   "homepage": "https://github.com/luizhenrique07/worldtradingdata#readme",
   "devDependencies": {
     "@types/node": "^12.0.2",
+    "@types/dotenv": "^6.1.1",
     "@typescript-eslint/eslint-plugin": "^1.9.0",
     "@typescript-eslint/parser": "^1.9.0",
     "eslint": "^5.16.0",
@@ -33,9 +34,10 @@
     "eslint-plugin-standard": "^4.0.0",
     "nodemon": "^1.19.0",
     "sucrase": "^3.10.1",
+    "ts-node": "^8.2.0",
     "typescript": "^3.4.5"
   },
   "dependencies": {
-    "@types/node": "^12.0.2"
+    "dotenv": "^8.0.0"
   }
 }

@@ -1,7 +1,9 @@
 {
-    "watch": ["src"],
-    "ext":"ts",
-    "execMap":{
-        "ts": "sucrase-node src/server.ts"
+    "nodemonConfig": {
+      "ignore": ["**/*.test.ts", "**/*.spec.ts", ".git", "node_modules"],
+      "watch": ["src"],
+      "exec": "npm start",
+      "ext": "ts"
     }
-}
+  }
+  
