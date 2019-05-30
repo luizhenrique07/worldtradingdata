@@ -9,11 +9,10 @@ if (process.env.API_TOKEN === undefined || process.env.API_TOKEN === '') {
 }
 
 var wtd = new Wtd();
-var stocks = ['B3SA3.SA'];
+var stocks = ['AAAAX', 'AAADX', 'AAAGX'];
 
 async function main(): Promise<void> {
-  var teste: any = await wtd.realTime(stocks);
-  console.log(teste);
+  var test = await wtd.IntradayMarketData('B3SA3.SA', 1, 1);
 }
 
 main();
