@@ -4,9 +4,10 @@ import { RequestOptions, Agent, request } from 'https';
 import * as querystring from 'querystring';
 import { RealTimeResponse } from '../interfaces/realTimeResponse';
 import { IntradayMarketResponse } from '../interfaces/intradayMarketResponse';
+import { HistoricalMarketResponse } from '../interfaces/historicalMarketResponse';
 
 export class WorldTradingDataWrapper {
-  private options: RequestOptions = {};
+  private requestOptions: RequestOptions = {};
   private staticPath: string = '/api/v1/';
   private agent: Agent;
   private token: string
@@ -16,8 +17,8 @@ export class WorldTradingDataWrapper {
     this.agent = new Agent({
       keepAlive: true
     });
-    this.options.host = 'api.worldtradingdata.com';
-    this.options.method = 'GET';
+    this.requestOptions.host = 'api.worldtradingdata.com';
+    this.requestOptions.method = 'GET';
     this.token = process.env.API_TOKEN;
   }
 
@@ -50,7 +51,7 @@ export class WorldTradingDataWrapper {
    * @param sortBy Sort by a particular data attribute or by the order you entered the list.
    * @param output Change output to CSV.
    */
-  public MutualFundRealTime(symbols: string[], sortOrder?: string, sortBy?: string, output?: string): Promise<RealTimeResponse> {
+  public mutualFundRealTime(symbols: string[], sortOrder?: string, sortBy?: string, output?: string): Promise<RealTimeResponse> {
     var symbol = this.joinSymbols(symbols);
     var props = {
       api_token: this.token,
@@ -60,33 +61,64 @@ export class WorldTradingDataWrapper {
       output
     };
     this.setRequestPath('mutualfund', props);
-    this.options.path = this.staticPath + 'mutualfund?' + querystring.stringify(props);
+    this.requestOptions.path = this.staticPath + 'mutualfund?' + querystring.stringify(props);
     var result = this.callAPI() as Promise<RealTimeResponse>;
     return result;
   }
 
   /**
-   * Return a stream of the latest data for stocks and indexes worldwide.
-   * @param symbol Value of the stock, index or mutual fund you wish to return data for. Only one symbol per request.
-   * @param interval Number of minutes between the data.
-   * @param range The number of days data is returned for.
-   */
-  public IntradayMarketData(symbol: string, interval: number, range: number): Promise<any> {
+    * Return a stream of the latest data for stocks and indexes worldwide.
+    * @param symbol Value of the stock, index or mutual fund you wish to return data for. Only one symbol per request.
+    * @param interval Number of minutes between the data. Options: 1, 2, 5, 60
+    * @param range The number of days data is returned for. Options: 1-30
+    * @param sort Change the sort order of values. Options: 'asc', 'desc'
+    * @param output Change output to CSV. Options: 'csv', 'json'
+    * @param formatted Alter JSON data format. Does not affect CSV. Options: true, false
+    */
+  public intradayMarketData(symbol: string, interval: number, range: number, sort?: string, output?: string, formatted? : boolean): Promise<IntradayMarketResponse> {
     var props = {
       api_token: this.token,
       interval,
       range,
-      symbol
+      symbol,
+      sort,
+      output,
+      formatted
     };
 
     this.setRequestPath('intraday', props);
-    var result = this.callAPI({ host: 'intraday.worldtradingdata.com' }) as Promise<any>;
+    var result = this.callAPI({ host: 'intraday.worldtradingdata.com' }) as Promise<IntradayMarketResponse>;
+    return result;
+  }
+
+  /**
+    * Return the end of day history for every day the stock, index or mutual fund has been traded.
+    * @param symbol Value of the stock, index or mutual fund you wish to return data for.
+    * @param interval Number of minutes between the data. Options: 1, 2, 5, 60
+    * @param range The number of days data is returned for. Options: 1-30
+    * @param sort Change the sort order of values. Options: 'asc', 'desc'
+    * @param output Change output to CSV. Options: 'csv', 'json'
+    * @param formatted Alter JSON data format. Does not affect CSV. Options: true, false
+    */
+  public historicalMarketData(symbol: string, date_from?: Date, date_to?: Date, sort?: string, output?: string, formatted? : boolean): Promise<HistoricalMarketResponse> {
+    var props = {
+      api_token: this.token,
+      date_to: date_to.toLocaleDateString(),
+      date_from: date_from.toLocaleDateString(),
+      symbol,
+      sort,
+      output,
+      formatted
+    };
+
+    this.setRequestPath('history', props);
+    var result = this.callAPI() as Promise<HistoricalMarketResponse>;
     return result;
   }
 
   private setRequestPath(endPoint: string, props: any): void{
-    this.options.path = this.staticPath + `${endPoint}?` + querystring.stringify(props);
-    console.log(this.options.path
+    this.requestOptions.path = this.staticPath + `${endPoint}?` + querystring.stringify(props);
+    console.log(this.requestOptions.path
     );
   }
 
@@ -102,18 +134,22 @@ export class WorldTradingDataWrapper {
     return symbolUnified;
   }
 
+  /**
+   * Make a request using class prop requestOptions. Default Host: api.worldtradingdata.com, Method: 'GET'
+   * @param param0 Object with host and/or method
+   */
   private callAPI(
     { host = 'api.worldtradingdata.com', method = 'GET' }: {host?: string; method?: string} = {}
   ): Promise<any> {
-    this.options.host = host;
-    this.options.method = method;
+    this.requestOptions.host = host;
+    this.requestOptions.method = method;
 
     return new Promise((resolve, reject): void => {
       const req: ClientRequest = request(
-        this.options,
+        this.requestOptions,
         (res): void => {
           var body = '';
-          console.log(this.options);
+          console.log(this.requestOptions);
 
           res.on(
             'data',
