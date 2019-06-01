@@ -2,9 +2,10 @@
 import { ClientRequest } from 'http';
 import { RequestOptions, Agent, request } from 'https';
 import * as querystring from 'querystring';
-import { RealTimeResponse } from '../interfaces/realTimeResponse';
-import { IntradayMarketResponse } from '../interfaces/intradayMarketResponse';
-import { HistoricalMarketResponse } from '../interfaces/historicalMarketResponse';
+import { RealTimeResponse } from '../models/realTimeResponse';
+import { IntradayMarketResponse } from '../models/intradayMarketResponse';
+import { HistoricalMarketResponse } from '../models/historicalMarketResponse';
+import { MultiSingleDayHistoryResponse } from '../models/multiSingleDayHistoryResponse';
 
 export class WorldTradingDataWrapper {
   private requestOptions: RequestOptions = {};
@@ -100,11 +101,11 @@ export class WorldTradingDataWrapper {
     * @param output Change output to CSV. Options: 'csv', 'json'
     * @param formatted Alter JSON data format. Does not affect CSV. Options: true, false
     */
-  public historicalMarketData(symbol: string, date_from?: Date, date_to?: Date, sort?: string, output?: string, formatted? : boolean): Promise<HistoricalMarketResponse> {
+  public fullHistory(symbol: string, date_from?: Date, date_to?: Date, sort?: string, output?: string, formatted? : boolean): Promise<HistoricalMarketResponse> {
     var props = {
       api_token: this.token,
-      date_to: date_to.toLocaleDateString(),
-      date_from: date_from.toLocaleDateString(),
+      date_from: date_from.toISOString().substr(0, 10),
+      date_to: date_to.toISOString().substr(0, 10),
       symbol,
       sort,
       output,
@@ -113,6 +114,29 @@ export class WorldTradingDataWrapper {
 
     this.setRequestPath('history', props);
     var result = this.callAPI() as Promise<HistoricalMarketResponse>;
+    return result;
+  }
+
+  /**
+    * Returns data for multiple stock, index or mutual funds for a single specific day.
+    * @param symbols Comma seperated values of the tickers you wish to return
+    * @param date The date you wish to retrieve data for.
+    * @param sort Change the sort order of values. Options: 'asc', 'desc'
+    * @param output Change output to CSV. Options: 'csv', 'json'
+    * @param formatted Alter JSON data format. Does not affect CSV. Options: true, false
+    */
+  public multiSingleDayHistory(symbols: string[], date: Date, sort?: string, output?: string, formatted? : boolean): Promise<MultiSingleDayHistoryResponse> {
+    var props = {
+      api_token: this.token,
+      date: date.toISOString().substr(0, 10),
+      symbol: this.joinSymbols(symbols),
+      sort,
+      output,
+      formatted
+    };
+
+    this.setRequestPath('history_multi_single_day', props);
+    var result = this.callAPI() as Promise<MultiSingleDayHistoryResponse>;
     return result;
   }
 
@@ -136,7 +160,7 @@ export class WorldTradingDataWrapper {
 
   /**
    * Make a request using class prop requestOptions. Default Host: api.worldtradingdata.com, Method: 'GET'
-   * @param param0 Object with host and/or method
+   * @param param0 Object with host and/or http method
    */
   private callAPI(
     { host = 'api.worldtradingdata.com', method = 'GET' }: {host?: string; method?: string} = {}

@@ -12,8 +12,8 @@ var wtd = new Wtd();
 var stocks = ['AAAAX', 'AAADX', 'AAAGX'];
 
 async function main(): Promise<void> {
-  var test = await wtd.historicalMarketData('B3SA3.SA', new Date(2019, 2, 1), new Date(2019, 3, 1));
-  // console.log(test);
+  var test = await wtd.multiSingleDayHistory(['B3SA3.SA', 'AAPL'], new Date(2019, 3, 26));
+  console.log(test);
 }
 
 main();
