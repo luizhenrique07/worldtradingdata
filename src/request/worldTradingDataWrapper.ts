@@ -140,6 +140,17 @@ export class WorldTradingDataWrapper {
     return result;
   }
 
+  public forex(base: string): Promise<MultiSingleDayHistoryResponse> {
+    var props = {
+      api_token: this.token,
+      base
+    };
+
+    this.setRequestPath('forex', props);
+    var result = this.callAPI() as Promise<MultiSingleDayHistoryResponse>;
+    return result;
+  }
+
   private setRequestPath(endPoint: string, props: any): void{
     this.requestOptions.path = this.staticPath + `${endPoint}?` + querystring.stringify(props);
     console.log(this.requestOptions.path
