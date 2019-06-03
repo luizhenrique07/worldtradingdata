@@ -19,8 +19,13 @@ var wtd = new worldTradingDataWrapper_1.WorldTradingDataWrapper();
 var stocks = ['AAAAX', 'AAADX', 'AAAGX'];
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
-        var test = yield wtd.IntradayMarketData('B3SA3.SA', 1, 1);
-        console.log(test.intraday['2019-05-30 12:54:00']);
+        try {
+            var test = yield wtd.forexSingleDay('BRL', new Date(2019, 4, 27));
+            console.log(test);
+        }
+        catch (error) {
+            // console.log(error);
+        }
     });
 }
 main();
