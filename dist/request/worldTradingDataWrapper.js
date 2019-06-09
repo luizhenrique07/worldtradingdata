@@ -10,8 +10,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const https_1 = require("https");
 const querystring = __importStar(require("querystring"));
 class WorldTradingDataWrapper {
-    // Agent keepAlive true to decrease requests response time
-    constructor() {
+    /**
+     * A wrapper for the World Trading Data API
+     * @param token API token
+     */
+    constructor(token) {
         this.requestOptions = {};
         this.staticPath = '/api/v1/';
         this.isCsvFormat = false;
@@ -20,7 +23,7 @@ class WorldTradingDataWrapper {
         });
         this.requestOptions.host = 'api.worldtradingdata.com';
         this.requestOptions.method = 'GET';
-        this.token = process.env.API_TOKEN;
+        this.token = token;
     }
     /**
      * Returns the nearest trading data for stocks and indexes worldwide.
@@ -30,7 +33,7 @@ class WorldTradingDataWrapper {
      * @param output Change output to CSV. Options: 'csv', 'json'.
      */
     realTime(symbols, sortOrder, sortBy, output) {
-        var symbol = this.joinSymbols(symbols);
+        var symbol = this.formatSymbolsFromArray(symbols);
         var props = {
             api_token: this.token,
             symbol,
@@ -50,7 +53,7 @@ class WorldTradingDataWrapper {
      * @param output Change output to CSV. Options: 'csv', 'json'.
      */
     mutualFundRealTime(symbols, sortOrder, sortBy, output) {
-        var symbol = this.joinSymbols(symbols);
+        var symbol = this.formatSymbolsFromArray(symbols);
         var props = {
             api_token: this.token,
             symbol,
@@ -121,7 +124,7 @@ class WorldTradingDataWrapper {
         var props = {
             api_token: this.token,
             date: date.toISOString().substr(0, 10),
-            symbol: this.joinSymbols(symbols),
+            symbol: this.formatSymbolsFromArray(symbols),
             sort,
             output,
             formatted
@@ -164,15 +167,51 @@ class WorldTradingDataWrapper {
         var result = this.callAPI();
         return result;
     }
+    /**
+     * eturn the all the conversion rates for the base currency for a specific date in exceptional timing.
+     * @param base Value of the currency you wish to return data for.
+     * @param date Date you wish to return the conversion data for.
+     * @param output Change output to CSV. Options: 'csv', 'json'.
+     * @param formatted Alter JSON data format. Does not affect CSV. Options: true, false.
+     */
     forexSingleDay(base, date, output, formatted) {
         var props = {
             api_token: this.token,
             base,
-            date,
+            date: date.toISOString().substr(0, 10),
             output,
             formatted
         };
         this.setRequestPath('forex_single_day', props);
+        var result = this.callAPI();
+        return result;
+    }
+    /**
+     * Search and filter the entire stock and index database to build your own search functionality for your applications.
+     * @param searchTerm Search term you wish to find stocks for. Example: AAPL
+     * @param searchBy Search by only symbol or name, or both. Options: symbol, name, symbol, name.
+     * @param stockExchange Filter by a array of stock exchanges.
+     * @param currency Filter by a array of currencies.
+     * @param limit Limit the number of results returned. Options: 1-500
+     * @param page Value of the page you wish to see values for.
+     * @param sortBy Sort by a specific column. Options: symbol, name, currency, stock_exchange_long, stock_exchange_short, market_cap, volume, change_pct.
+     * @param sortOrder Change the sort order of values. Options: 'asc', 'desc'.
+     * @param output Change output to CSV. Options: 'csv', 'json'.
+     */
+    stockSearch(searchTerm, searchBy, stockExchange, currency, limit, page, sortBy, sortOrder, output) {
+        var props = {
+            api_token: this.token,
+            search_term: searchTerm,
+            search_by: searchBy,
+            stock_exchange: stockExchange ? this.formatSymbolsFromArray(stockExchange) : null,
+            currency,
+            limit,
+            page,
+            sort_by: sortBy,
+            sort_order: sortOrder,
+            output
+        };
+        this.setRequestPath('stock_search', props);
         var result = this.callAPI();
         return result;
     }
@@ -182,12 +221,11 @@ class WorldTradingDataWrapper {
         }
         else {
             this.isCsvFormat = false;
-            console.log('era pra ser false');
         }
         this.requestOptions.path = this.staticPath + `${endPoint}?` + querystring.stringify(props);
         console.log(this.requestOptions.path);
     }
-    joinSymbols(symbols) {
+    formatSymbolsFromArray(symbols) {
         var symbolUnified = '';
         symbols.forEach((symbol, index) => {
             if (index === symbols.length - 1) {
@@ -213,9 +251,8 @@ class WorldTradingDataWrapper {
                 res.on('data', (data) => {
                     body += data;
                 });
-                res.on('end', function () {
+                res.on('end', () => {
                     try {
-                        console.log(this.isCsvFormat);
                         if (this.isCsvFormat === false) {
                             return resolve(JSON.parse(body));
                         }

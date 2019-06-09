@@ -8,23 +8,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const path_1 = require("path");
-const dotenv_1 = require("dotenv");
 const worldTradingDataWrapper_1 = require("./request/worldTradingDataWrapper");
-dotenv_1.config({ path: path_1.resolve(__dirname, '../.env') });
-if (process.env.API_TOKEN === undefined || process.env.API_TOKEN === '') {
-    throw new Error('API_TOKEN is required');
-}
-var wtd = new worldTradingDataWrapper_1.WorldTradingDataWrapper();
+var token = 'CKvSVXdtnuEonOIFD1ans3oXNOlFaJ2QE4cWLxnqalLfTyd6DeNnrJfIPFpk';
+var wtd = new worldTradingDataWrapper_1.WorldTradingDataWrapper(token);
 var stocks = ['AAAAX', 'AAADX', 'AAAGX'];
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            var test = yield wtd.forexSingleDay('BRL', new Date(2019, 4, 27));
-            console.log(test);
+            var test = yield wtd.forex('BRL');
+            console.log(test.data);
         }
         catch (error) {
-            // console.log(error);
+            console.log(error);
         }
     });
 }

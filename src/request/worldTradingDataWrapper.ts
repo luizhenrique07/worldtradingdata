@@ -18,7 +18,10 @@ export class WorldTradingDataWrapper {
   private token: string
   private isCsvFormat: boolean = false;
 
-  // Agent keepAlive true to decrease requests response time
+  /**
+   * A wrapper for the World Trading Data API
+   * @param token API token
+   */
   public constructor(token: string) {
     this.agent = new Agent({
       keepAlive: true

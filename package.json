@@ -2,7 +2,8 @@
   "name": "worldtradingdata",
   "version": "1.0.0",
   "description": "Node.js wrapper for World Trading Data API",
-  "main": "./src/server.ts",
+  "main": "./dist/index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "start": "nodemon --watch src --exec ts-node src/server.ts -e ts",
     "build": "tsc -p tsconfig.json",
@@ -35,8 +36,5 @@
     "nodemon": "^1.19.0",
     "ts-node": "^8.2.0",
     "typescript": "^3.4.5"
-  },
-  "dependencies": {
-    "dotenv": "^8.0.0"
   }
 }
