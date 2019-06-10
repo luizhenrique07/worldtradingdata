@@ -1,3 +1,3 @@
-import { WorldTradingDataWrapper as Wtd } from './request/worldTradingDataWrapper';
+import { WorldTradingDataWrapper as Wtd } from './worldTradingDataWrapper';
 
 export { Wtd };
