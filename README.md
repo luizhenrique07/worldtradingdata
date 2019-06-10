@@ -2,7 +2,13 @@
 
 Node.js wrapper for World Trading Data API
 
-### Table of Contents
+## Installation
+
+```bash
+npm i worldtradingdata
+```
+
+## Class Methods
 
 - [constructor][1]
   - [Parameters][2]
