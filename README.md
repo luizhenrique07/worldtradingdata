@@ -11,7 +11,7 @@ npm i worldtradingdata
 ## Usage
 
 ```typescript
-import { WorldTradingDataWrapper } from "./index";
+import { WorldTradingDataWrapper } from "worldtradingdata";
 
 var token = "<yourToken>";
 

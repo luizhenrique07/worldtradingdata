@@ -1,8 +1,9 @@
 {
   "name": "worldtradingdata",
-  "version": "1.0.3",
+  "version": "1.0.6",
   "description": "Node.js wrapper for World Trading Data API",
-  "main": "./dist/index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "start": "nodemon --watch src --exec ts-node src/server.ts -e ts",
     "build": "tsc -p tsconfig.json",
