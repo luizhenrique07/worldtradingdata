@@ -8,6 +8,22 @@ Node.js wrapper for World Trading Data API
 npm i worldtradingdata
 ```
 
+## Usage
+
+```typescript
+import { WorldTradingDataWrapper } from "./index";
+
+var token = "<yourToken>";
+
+var wtd = new WorldTradingDataWrapper(token);
+
+wtd.realTime(["AAPL"]).then(
+  (realTimeResponse): void => {
+    console.log(realTimeResponse.data[0]);
+  }
+);
+```
+
 ## Class Methods
 
 - [constructor][1]

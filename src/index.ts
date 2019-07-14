@@ -1,3 +1,3 @@
-import { WorldTradingDataWrapper as Wtd } from './worldTradingDataWrapper';
+import { WorldTradingDataWrapper } from "./worldTradingDataWrapper";
 
-export { Wtd };
+export { WorldTradingDataWrapper };
