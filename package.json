@@ -1,6 +1,6 @@
 {
   "name": "worldtradingdata",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Node.js wrapper for World Trading Data API",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -24,9 +24,9 @@
   "homepage": "https://github.com/luizhenrique07/worldtradingdata#readme",
   "devDependencies": {
     "@types/node": "^12.0.2",
-    "@types/dotenv": "^6.1.1",
     "@typescript-eslint/eslint-plugin": "^1.9.0",
     "@typescript-eslint/parser": "^1.9.0",
+    "babel-eslint": "^8.0.1",
     "eslint": "^5.16.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.17.2",

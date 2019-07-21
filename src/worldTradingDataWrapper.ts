@@ -1,19 +1,18 @@
-/* eslint-disable @typescript-eslint/camelcase */
-import { ClientRequest } from 'http';
-import { RequestOptions, Agent, request } from 'https';
-import * as querystring from 'querystring';
-import { RealTimeResponse } from './models/realTimeResponse';
-import { IntradayMarketResponse } from './models/intradayMarketResponse';
-import { HistoricalMarketResponse } from './models/historicalMarketResponse';
-import { MultiSingleDayHistoryResponse } from './models/multiSingleDayHistoryResponse';
-import { StockSearchResponse } from './models/stockSearchResponse';
-import { ForexResponse } from './models/forexResponse';
-import { ForexHistoryResponse } from './models/forexHistoryResponse';
-import { ForexSingleDay } from './models/forexSingleDay';
+import { ClientRequest } from "http";
+import { RequestOptions, Agent, request } from "https";
+import * as querystring from "querystring";
+import { RealTimeResponse } from "./models/realTimeResponse";
+import { IntradayMarketResponse } from "./models/intradayMarketResponse";
+import { HistoricalMarketResponse } from "./models/historicalMarketResponse";
+import { MultiSingleDayHistoryResponse } from "./models/multiSingleDayHistoryResponse";
+import { StockSearchResponse } from "./models/stockSearchResponse";
+import { ForexResponse } from "./models/forexResponse";
+import { ForexHistoryResponse } from "./models/forexHistoryResponse";
+import { ForexSingleDay } from "./models/forexSingleDay";
 
 export class WorldTradingDataWrapper {
   private requestOptions: RequestOptions = {};
-  private staticPath: string = '/api/v1/';
+  private staticPath: string = "/api/v1/";
   private agent: Agent;
   private token: string
   private isCsvFormat: boolean = false;
@@ -26,17 +25,17 @@ export class WorldTradingDataWrapper {
     this.agent = new Agent({
       keepAlive: true
     });
-    this.requestOptions.host = 'api.worldtradingdata.com';
-    this.requestOptions.method = 'GET';
+    this.requestOptions.host = "api.worldtradingdata.com";
+    this.requestOptions.method = "GET";
     this.token = token;
   }
 
   /**
    * Returns the nearest trading data for stocks and indexes worldwide.
    * @param symbols Array with stocks you wish to return.
-   * @param sortOrder Change the sort order of values. Options: 'asc', 'desc'.
+   * @param sortOrder Change the sort order of values. Options: "asc", "desc".
    * @param sortBy Sort by a particular data attribute or by the order you entered the list. Options: symbol, name, list_order
-   * @param output Change output to CSV. Options: 'csv', 'json'.
+   * @param output Change output to CSV. Options: "csv", "json".
    */
   public realTime(symbols: string[], sortOrder?: string, sortBy?: string, output?: string): Promise<RealTimeResponse> {
     var symbol = this.formatSymbolsFromArray(symbols);
@@ -48,7 +47,7 @@ export class WorldTradingDataWrapper {
       output
     };
 
-    this.setRequestPath('stock', props);
+    this.setRequestPath("stock", props);
     var result = this.callAPI() as Promise<RealTimeResponse>;
     return result;
   }
@@ -56,9 +55,9 @@ export class WorldTradingDataWrapper {
   /**
    * The endpoint allows up to 500 mutual funds to be returned with each request in exceptional timing.
    * @param symbols Array with stocks you wish to return.
-   * @param sortOrder Change the sort order of values. Options: 'asc', 'desc'.
+   * @param sortOrder Change the sort order of values. Options: "asc", "desc".
    * @param sortBy Sort by a particular data attribute or by the order you entered the list. Options: symbol, name, list_order
-   * @param output Change output to CSV. Options: 'csv', 'json'.
+   * @param output Change output to CSV. Options: "csv", "json".
    */
   public mutualFundRealTime(symbols: string[], sortOrder?: string, sortBy?: string, output?: string): Promise<RealTimeResponse> {
     var symbol = this.formatSymbolsFromArray(symbols);
@@ -69,8 +68,8 @@ export class WorldTradingDataWrapper {
       sort_by: sortBy,
       output
     };
-    this.setRequestPath('mutualfund', props);
-    this.requestOptions.path = this.staticPath + 'mutualfund?' + querystring.stringify(props);
+    this.setRequestPath("mutualfund", props);
+    this.requestOptions.path = this.staticPath + "mutualfund?" + querystring.stringify(props);
     var result = this.callAPI() as Promise<RealTimeResponse>;
     return result;
   }
@@ -80,8 +79,8 @@ export class WorldTradingDataWrapper {
     * @param symbol Value of the stock, index or mutual fund you wish to return data for. Only one symbol per request.
     * @param interval Number of minutes between the data. Options: 1, 2, 5, 60.
     * @param range The number of days data is returned for. Options: 1-30.
-    * @param sort Change the sort order of values. Options: 'asc', 'desc'.
-    * @param output Change output to CSV. Options: 'csv', 'json'.
+    * @param sort Change the sort order of values. Options: "asc", "desc".
+    * @param output Change output to CSV. Options: "csv", "json".
     * @param formatted Alter JSON data format. Does not affect CSV. Options: true, false.
     */
   public intradayMarketData(symbol: string, interval: number, range: number, sort?: string, output?: string, formatted? : boolean): Promise<IntradayMarketResponse> {
@@ -95,8 +94,8 @@ export class WorldTradingDataWrapper {
       formatted
     };
 
-    this.setRequestPath('intraday', props);
-    var result = this.callAPI({ host: 'intraday.worldtradingdata.com' }) as Promise<IntradayMarketResponse>;
+    this.setRequestPath("intraday", props);
+    var result = this.callAPI({ host: "intraday.worldtradingdata.com" }) as Promise<IntradayMarketResponse>;
     return result;
   }
 
@@ -105,8 +104,8 @@ export class WorldTradingDataWrapper {
     * @param symbol Value of the stock, index or mutual fund you wish to return data for.
     * @param interval Number of minutes between the data. Options: 1, 2, 5, 60.
     * @param range The number of days data is returned for. Options: 1-30.
-    * @param sort Change the sort order of values. Options: 'asc', 'desc'.
-    * @param output Change output to CSV. Options: 'csv', 'json'.
+    * @param sort Change the sort order of values. Options: "asc", "desc".
+    * @param output Change output to CSV. Options: "csv", "json".
     * @param formatted Alter JSON data format. Does not affect CSV. Options: true, false.
     */
   public fullHistory(symbol: string, date_from?: Date, date_to?: Date, sort?: string, output?: string, formatted? : boolean): Promise<HistoricalMarketResponse> {
@@ -120,7 +119,7 @@ export class WorldTradingDataWrapper {
       formatted
     };
 
-    this.setRequestPath('history', props);
+    this.setRequestPath("history", props);
     var result = this.callAPI() as Promise<HistoricalMarketResponse>;
     return result;
   }
@@ -129,8 +128,8 @@ export class WorldTradingDataWrapper {
     * Returns data for multiple stock, index or mutual funds for a single specific day.
     * @param symbols Comma seperated values of the tickers you wish to return.
     * @param date The date you wish to retrieve data for.
-    * @param sort Change the sort order of values. Options: 'asc', 'desc'.
-    * @param output Change output to CSV. Options: 'csv', 'json'.
+    * @param sort Change the sort order of values. Options: "asc", "desc".
+    * @param output Change output to CSV. Options: "csv", "json".
     * @param formatted Alter JSON data format. Does not affect CSV. Options: true, false.
     */
   public multiSingleDayHistory(symbols: string[], date: Date, sort?: string, output?: string, formatted? : boolean): Promise<MultiSingleDayHistoryResponse> {
@@ -143,7 +142,7 @@ export class WorldTradingDataWrapper {
       formatted
     };
 
-    this.setRequestPath('history_multi_single_day', props);
+    this.setRequestPath("history_multi_single_day", props);
     var result = this.callAPI() as Promise<MultiSingleDayHistoryResponse>;
     return result;
   }
@@ -158,7 +157,7 @@ export class WorldTradingDataWrapper {
       base
     };
 
-    this.setRequestPath('forex', props);
+    this.setRequestPath("forex", props);
     var result = this.callAPI() as Promise<ForexResponse>;
     return result;
   }
@@ -167,8 +166,8 @@ export class WorldTradingDataWrapper {
    * Returns the end of day conversion rate for each day of data.
    * @param base Base of the currency you wish to return data for.
    * @param convertTo Value of the currency you wish to return conversion data to.
-   * @param sort Change the sort order of values. Options: 'asc', 'desc'.
-   * @param output Change output to CSV. Options: 'csv', 'json'.
+   * @param sort Change the sort order of values. Options: "asc", "desc".
+   * @param output Change output to CSV. Options: "csv", "json".
    * @param formatted Alter JSON data format. Does not affect CSV. Options: true, false.
    */
   public forexHistory(base: string, convertTo: string, sort?: string, output?: string, formatted?: string): Promise<ForexHistoryResponse> {
@@ -181,7 +180,7 @@ export class WorldTradingDataWrapper {
       formatted
     };
 
-    this.setRequestPath('forex_history', props);
+    this.setRequestPath("forex_history", props);
     var result = this.callAPI() as Promise<ForexHistoryResponse>;
     return result;
   }
@@ -190,7 +189,7 @@ export class WorldTradingDataWrapper {
    * eturn the all the conversion rates for the base currency for a specific date in exceptional timing.
    * @param base Value of the currency you wish to return data for.
    * @param date Date you wish to return the conversion data for.
-   * @param output Change output to CSV. Options: 'csv', 'json'.
+   * @param output Change output to CSV. Options: "csv", "json".
    * @param formatted Alter JSON data format. Does not affect CSV. Options: true, false.
    */
   public forexSingleDay(base: string, date: Date, output?: string, formatted?: string): Promise<ForexSingleDay> {
@@ -202,7 +201,7 @@ export class WorldTradingDataWrapper {
       formatted
     };
 
-    this.setRequestPath('forex_single_day', props);
+    this.setRequestPath("forex_single_day", props);
     var result = this.callAPI() as Promise<ForexSingleDay>;
     return result;
   }
@@ -216,8 +215,8 @@ export class WorldTradingDataWrapper {
    * @param limit Limit the number of results returned. Options: 1-500
    * @param page Value of the page you wish to see values for.
    * @param sortBy Sort by a specific column. Options: symbol, name, currency, stock_exchange_long, stock_exchange_short, market_cap, volume, change_pct.
-   * @param sortOrder Change the sort order of values. Options: 'asc', 'desc'.
-   * @param output Change output to CSV. Options: 'csv', 'json'.
+   * @param sortOrder Change the sort order of values. Options: "asc", "desc".
+   * @param output Change output to CSV. Options: "csv", "json".
    */
   public stockSearch(searchTerm?: string, searchBy?: string, stockExchange?: string[], currency?: string, limit?: number, page?: number, sortBy?: string, sortOrder?: string, output?: string): Promise<StockSearchResponse> {
     var props = {
@@ -233,13 +232,13 @@ export class WorldTradingDataWrapper {
       output
     };
 
-    this.setRequestPath('stock_search', props);
+    this.setRequestPath("stock_search", props);
     var result = this.callAPI() as Promise<StockSearchResponse>;
     return result;
   }
 
   private setRequestPath(endPoint: string, props: any): void{
-    if (props.output === 'csv') {
+    if (props.output === "csv") {
       this.isCsvFormat = true;
     } else {
       this.isCsvFormat = false;
@@ -248,23 +247,23 @@ export class WorldTradingDataWrapper {
   }
 
   private formatSymbolsFromArray(symbols: string[]): string {
-    var symbolUnified = '';
+    var symbolUnified = "";
     symbols.forEach((symbol, index): void => {
       if (index === symbols.length - 1) {
         symbolUnified += symbol;
       } else {
-        symbolUnified += symbol + ',';
+        symbolUnified += symbol + ",";
       }
     });
     return symbolUnified;
   }
 
   /**
-   * Make a request using class prop requestOptions. Default Host: api.worldtradingdata.com, Method: 'GET'
+   * Make a request using class prop requestOptions. Default Host: api.worldtradingdata.com, Method: "GET"
    * @param param0 Object with host and/or http method
    */
   private callAPI(
-    { host = 'api.worldtradingdata.com', method = 'GET' }: {host?: string; method?: string} = {}
+    { host = "api.worldtradingdata.com", method = "GET" }: {host?: string; method?: string} = {}
   ): Promise<any> {
     this.requestOptions.host = host;
     this.requestOptions.method = method;
@@ -273,15 +272,15 @@ export class WorldTradingDataWrapper {
       const req: ClientRequest = request(
         this.requestOptions,
         (res): void => {
-          var body = '';
+          var body = "";
           res.on(
-            'data',
+            "data",
             (data): void => {
               body += data;
             }
           );
 
-          res.on('end', (): void => {
+          res.on("end", (): void => {
             try {
               if (this.isCsvFormat === false) {
                 return resolve(JSON.parse(body));
@@ -295,7 +294,7 @@ export class WorldTradingDataWrapper {
         }
       );
 
-      req.on('error', (error): void => {
+      req.on("error", (error): void => {
         return reject(error);
       });
 
