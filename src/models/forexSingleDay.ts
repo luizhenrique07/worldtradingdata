@@ -1,6 +1,6 @@
-import { ForexData } from './forexData';
+import { ForexData } from "./forexData";
 
-export interface ForexSingleDay{
+export interface ForexSingleDay {
   base: string;
   date: string;
   data: ForexData;

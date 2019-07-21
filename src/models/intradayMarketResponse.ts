@@ -5,11 +5,11 @@ export interface IntradayMarketResponse {
   intraday: Intraday;
 }
 
-interface Intraday{
+export interface Intraday {
   [key: string]: DayData;
 }
 
-interface DayData {
+export interface DayData {
   open: string;
   close: string;
   high: string;

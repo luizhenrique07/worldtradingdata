@@ -1,10 +1,10 @@
-import { DayData } from './dayData';
+import { DayData } from "./dayData";
 
-export interface HistoricalMarketResponse{
+export interface HistoricalMarketResponse {
   name: string;
   history: Historical;
 }
 
-interface Historical{
+export interface Historical {
   [key: string]: DayData;
 }

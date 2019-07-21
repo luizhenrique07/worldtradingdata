@@ -1,3 +1,3 @@
-export interface ForexData{
+export interface ForexData {
   [key: string]: string;
 }

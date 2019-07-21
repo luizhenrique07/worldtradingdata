@@ -1,10 +1,10 @@
-import { DayData } from './dayData';
+import { DayData } from "./dayData";
 
-export interface MultiSingleDayHistoryResponse{
+export interface MultiSingleDayHistoryResponse {
   date: Date;
-  data: Stock;
+  data: DayHistoryStock;
 }
 
-interface Stock{
+export interface DayHistoryStock {
   [key: string]: DayData;
 }

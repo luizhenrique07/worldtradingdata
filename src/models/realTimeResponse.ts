@@ -1,10 +1,10 @@
 export interface RealTimeResponse {
   symbols_requested: number;
   symbols_returned: number;
-  data: Data[];
+  data: RealTimeResponseData[];
 }
 
-interface Data {
+export interface RealTimeResponseData {
   symbol: string;
   name: string;
   price: string;
@@ -12,8 +12,8 @@ interface Data {
   price_open: string;
   day_high: string;
   day_low: string;
-  '52_week_high': string;
-  '52_week_low': string;
+  "52_week_high": string;
+  "52_week_low": string;
   day_change: string;
   change_pct: string;
   close_yesterday: string;

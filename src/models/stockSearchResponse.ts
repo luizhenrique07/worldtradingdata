@@ -1,4 +1,4 @@
-export interface StockSearchResponse{
+export interface StockSearchResponse {
   total_returned: number;
   total_results: number;
   total_pages: number;
@@ -7,7 +7,7 @@ export interface StockSearchResponse{
   data: StockSeatchData[];
 }
 
-interface StockSeatchData{
+export interface StockSeatchData {
   symbol: string;
   name: string;
   currency: string;

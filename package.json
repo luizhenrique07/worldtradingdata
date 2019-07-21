@@ -1,11 +1,11 @@
 {
   "name": "worldtradingdata",
-  "version": "1.0.7",
+  "version": "1.0.11",
   "description": "Node.js wrapper for World Trading Data API",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "start": "nodemon --watch src --exec ts-node src/server.ts -e ts",
+    "start": "nodemon --watch src --exec ts-node src/index.ts -e ts",
     "build": "tsc -p tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -35,6 +35,6 @@
     "eslint-plugin-standard": "^4.0.0",
     "nodemon": "^1.19.0",
     "ts-node": "^8.2.0",
-    "typescript": "^3.4.5"
+    "typescript": "^3.5.3"
   }
 }
